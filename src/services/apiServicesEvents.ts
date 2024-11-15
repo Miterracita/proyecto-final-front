@@ -1,8 +1,9 @@
 // url producción
-// const API_URL = "http://localhost:5000";
+const API_URL = "https://bono-booking-back.vercel.app";
+// const API_URL = "http://localhost:3000";
 
 // url local
-const LOCAL_URL = "http://localhost:3000";
+// const LOCAL_URL = "http://localhost:3000";
 
 
 // crear nuevo evento
@@ -16,7 +17,7 @@ export const newEvent = async (data:any) => {
   };
 
   try {
-    const response = await fetch(`${LOCAL_URL}/events/new-event`, opciones);
+    const response = await fetch(`${API_URL}/events/new-event`, opciones);
     if (!response.ok) {
       throw new Error("Error al crear el evento");
     }
@@ -31,7 +32,7 @@ export const newEvent = async (data:any) => {
 //ver todos los eventos
 export const getEvents = async () => {
   try {
-      const response = await fetch(`${LOCAL_URL}/events/events-list`);
+      const response = await fetch(`${API_URL}/events/events-list`);
       if (!response.ok) {
           throw new Error('Network response was not ok');
       }
@@ -46,7 +47,7 @@ export const getEvents = async () => {
 // actualizar un evento (por ID)
 export const updateEvent = async (id: any, userData: any) => {
   try {
-    const response = await fetch(`${LOCAL_URL}/events/${id}`, {
+    const response = await fetch(`${API_URL}/events/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -69,7 +70,7 @@ export const updateEvent = async (id: any, userData: any) => {
 //ELIMINAR evento
 export const deleteEvent = async (id: any) => {
   try {
-    const response = await fetch(`${LOCAL_URL}/events/${id}`, {
+    const response = await fetch(`${API_URL}/events/${id}`, {
       method: 'DELETE',
     });
     if (!response.ok) {
@@ -88,7 +89,7 @@ export const getSearch = async (name: any) => {
 
   try {
     //El uso de encodeURIComponent(eventName) en la construcción de URLs con parámetros de consulta es una buena práctica que asegura que la URL sea válida y funcione correctamente, independientemente de los caracteres que contenga eventName.
-    const response = await fetch(`${LOCAL_URL}/events?name=${encodeURIComponent(name)}`, {
+    const response = await fetch(`${API_URL}/events?name=${encodeURIComponent(name)}`, {
       method: 'GET',
     });
     
@@ -104,4 +105,21 @@ export const getSearch = async (name: any) => {
     throw error;
   }
   
+}
+
+export const getEventById = async (id: any) => {
+  
+  try {
+    console.log('ID del evento:', id);
+      const response = await fetch(`${API_URL}/events/${id}`); // URL del backend
+      if (!response.ok) {
+          throw new Error('Error al obtener el evento');
+      }
+      const events = await response.json();
+      return events;
+      
+    } catch (error) {
+      console.error('Error al obtener el evento:', error);
+      throw error;
+  }
 }
